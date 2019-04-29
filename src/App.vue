@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <Messages :styles=MessageContainerStyle />
-    <Form :onFocus=handleInputFocus />
+    <Messages :isHalfScreen="isKeyboardShowing"/>
+    <Form :inputFocus='updateInput' />
   </div>
 </template>
 
@@ -13,7 +13,7 @@ export default {
   name: 'app',
   data() {
     return {
-      MessageContainerStyle: 'height: 79vh;'
+      inputFocused: false,
     }
   },
   components: {
@@ -22,24 +22,20 @@ export default {
   },
   methods: {
     isMobile() { return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) },
-    handleInputFocus(size) {
-      if (this.isMobile()) {
-        this.MessageContainerStyle = `height: ${size === 'full' ? '79':'42'}vh;`
-      }
+    updateInput(status) {
+      this.inputFocused = status;
     }
   },
-  mounted() {
-    if (!this.isMobile()) {
-      this.MessageContainerStyle = 'height: 90vh';
-    }
+  computed: {
+      isKeyboardShowing(){ return this.isMobile() && this.inputFocused },
   }
 }
 </script>
 
 <style>
-  body, html {
+  body, html, #app {
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    overflow: hidden !important;
   }
 </style>

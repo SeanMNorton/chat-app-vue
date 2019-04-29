@@ -1,30 +1,26 @@
 <template>
-    <div v-if="username.length > 2" class="form-container">
-        <form @submit.prevent="sendMessage">
+    <!-- Username Form -->
+    <div v-if="username.length < 2" class="form-container">
+        <form @submit.prevent="saveName">
             <div class="form-group">
-                <input 
-                    @focus="onFocus('half')"
-                    @blur="onFocus('full')"
-                    type="text" 
-                    v-model="message" 
-                    placeholder="Message"
-                >
-                <button type="submit">Send</button>
+                <input type="text" v-model="name" placeholder="Username" @focus="inputFocus(true)" />
+                <button type="submit">Save</button>
             </div>
         </form>
     </div> 
-
+    <!-- Message Form  -->
     <div v-else class="form-container">
-        <form @submit.prevent="submitName">
-            <div class="form-group user">
+        <form @submit.prevent="sendMessage">
+            <div class="form-group">
                 <input 
-                    @focus="onFocus('half')"
-                    @blur="onFocus('full')"
+                    id="messageInput" 
                     type="text" 
-                    v-model="user" 
-                    placeholder="UserName"
-                >
-                <button type="submit">new user</button>
+                    v-model="message" 
+                    placeholder="Message"
+                    @focus="inputFocus(true)"
+                    @blur="inputFocus(false)" 
+                />
+                <button type="submit">Send</button>
             </div>
         </form>
     </div> 
@@ -35,10 +31,10 @@
 import io from 'socket.io-client';
 
 export default {
-    props: ['onFocus'],
+    props: ['inputFocus'],
     data() {
         return {
-            user: '',
+            name: '',
             username: '',
             message: '',
             socket : io(process.env.VUE_APP_SOCKET_IO_URL)
@@ -46,15 +42,23 @@ export default {
     },
     methods: {
         sendMessage() {
+            if( this.message !== '' ) { 
+                this.emitMessage(); 
+                this.message = '';
+            }
+            document.getElementById('messageInput').focus();
+        },
+        emitMessage() {
             this.socket.emit('SEND_MESSAGE', {
                 user: this.username,
-                text: this.message
+                body: this.message
             });
-            this.message = ''
         },
-        submitName() {
-            this.username = this.user;
-            this.user = '';
+        saveName() {
+            if (this.name.length > 2) {
+                this.username = this.name;
+                this.name = '';
+            }
         }
     },
 }
@@ -96,7 +100,7 @@ export default {
         margin-left: 1vw;
         border: none;
         outline: none;
-        background-color: black;
+        background-color: #28a745;
         color: white;
         box-sizing: border-box;
     }

@@ -1,24 +1,20 @@
 <template>
-  <div class="page">
-    <div 
-      :style="styles" 
-      v-chat-scroll="{always: false, smooth: true}" 
-      class="messages-container">
+    <div :class="`messages-container ${isHalfScreen ? 'half-screen' : 'full-screen'}`">
       <div class="messages" v-for="(message, index) in messages" :key="index">
-        <p>
-          <span class="username">{{ message.user }}:</span> 
-          <span class="text">{{ message.text }}</span>
-        </p>
+        <Message :message="message"/>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
 import io from 'socket.io-client';
+import Message from './Message';
 
 export default {
-  props: ['styles'],
+  props: ['isHalfScreen'],
+  components: {
+    Message,
+  },
   data() {
     return {
       messages: [ ],
@@ -27,7 +23,7 @@ export default {
   },
   mounted() {
     this.socket.on('MESSAGE', (data) => {
-        this.messages = [...this.messages, data];
+        this.messages = [data, ...this.messages];
     });
   },
 }
@@ -36,23 +32,24 @@ export default {
 
 <style scoped>
   .messages-container {
-    overflow: scroll;
     position: fixed;
-    padding: 20px 10px;
     bottom: 10vh;
+    display: flex;
+    flex-direction: column-reverse;
+    overflow: scroll;
     width: 100vw;
-    font-size: 1.2em;
+    padding: 20px 10px;
     box-sizing: border-box;
+    font-size: 1.2em;
+  }
+  .half-screen {
+    height: 40vh;
+  }
+  .full-screen {
+    height: 90vh;
   }
   .messages {
-    font-family: sans-serif
-  }
-  .username{
-    color: #777
-  }
-  .text {
-    color: #333;
-    font-weight: bold;
-    margin-left: 8px;
+    position: relative;
+    bottom: 0;
   }
 </style>
