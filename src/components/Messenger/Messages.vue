@@ -1,56 +1,61 @@
 <template>
-    <div :class="`messages-container ${isHalfScreen ? 'half-screen' : 'full-screen'}`">
-      <div class="messages" v-for="(message, index) in messages" :key="index">
-        <Message :user="currentUser" :message="message"/>
-      </div>
+  <div :class="halfScreenClasses">
+    <div class="messages" v-for="(message, index) in messages" :key="index">
+      <Message :user="currentUser" :message="message"/>
     </div>
+  </div>
 </template>
 
 <script>
-import io from 'socket.io-client';
-import Message from './Message';
+import io from "socket.io-client";
+import Message from "./Message";
 
 export default {
-  props: ['isHalfScreen', 'currentUser'],
+  props: ["isHalfScreen", "currentUser"],
   components: {
-    Message,
+    Message
   },
   data() {
     return {
-      messages: [ ],
-      socket : io(process.env.VUE_APP_SOCKET_IO_URL)
-    }
+      messages: [],
+      socket: io(process.env.VUE_APP_SOCKET_IO_URL)
+    };
   },
   mounted() {
-    this.socket.on('MESSAGE', (data) => {
-        this.messages = [data, ...this.messages];
+    this.socket.on("MESSAGE", data => {
+      this.messages = [data, ...this.messages];
     });
-  },
-}
+  }, 
+  computed: {
+    halfScreenClasses() {
+      return this.isHalfScreen ? 'messages-container half-screen' : 'messages-container full-screen';
+    }
+  }
+};
 </script>
 
 
 <style scoped>
-  .messages-container {
-    position: fixed;
-    bottom: 10vh;
-    display: flex;
-    flex-direction: column-reverse;
-    overflow: scroll;
-    width: 100vw;
-    max-width: 850px;
-    padding: 20px 10px;
-    box-sizing: border-box;
-    font-size: 1.2em;
-  }
-  .half-screen {
-    height: 40vh;
-  }
-  .full-screen {
-    height: 90vh;
-  }
-  .messages {
-    position: relative;
-    bottom: 0;
-  }
+.messages-container {
+  position: fixed;
+  bottom: 10vh;
+  display: flex;
+  flex-direction: column-reverse;
+  overflow: scroll;
+  width: 100vw;
+  max-width: 850px;
+  padding: 20px 10px;
+  box-sizing: border-box;
+  font-size: 1.2em;
+}
+.half-screen {
+  height: 40vh;
+}
+.full-screen {
+  height: 90vh;
+}
+.messages {
+  position: relative;
+  bottom: 0;
+}
 </style>
