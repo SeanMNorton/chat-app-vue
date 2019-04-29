@@ -1,28 +1,45 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Messages :styles=MessageContainerStyle />
+    <Form :onFocus=handleInputFocus />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Messages from './components/Messenger/Messages.vue';
+import Form from './components/Messenger/Form.vue';
 
 export default {
   name: 'app',
+  data() {
+    return {
+      MessageContainerStyle: 'height: 79vh;'
+    }
+  },
   components: {
-    HelloWorld
+    Form,
+    Messages,
+  },
+  methods: {
+    isMobile() { return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) },
+    handleInputFocus(size) {
+      if (this.isMobile()) {
+        this.MessageContainerStyle = `height: ${size === 'full' ? '79':'42'}vh;`
+      }
+    }
+  },
+  mounted() {
+    if (!this.isMobile()) {
+      this.MessageContainerStyle = 'height: 90vh';
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  body, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
 </style>
