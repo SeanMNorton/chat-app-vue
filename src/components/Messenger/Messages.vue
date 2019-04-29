@@ -1,7 +1,7 @@
 <template>
     <div :class="`messages-container ${isHalfScreen ? 'half-screen' : 'full-screen'}`">
       <div class="messages" v-for="(message, index) in messages" :key="index">
-        <Message :message="message"/>
+        <Message :user="currentUser" :message="message"/>
       </div>
     </div>
 </template>
@@ -11,7 +11,7 @@ import io from 'socket.io-client';
 import Message from './Message';
 
 export default {
-  props: ['isHalfScreen'],
+  props: ['isHalfScreen', 'currentUser'],
   components: {
     Message,
   },

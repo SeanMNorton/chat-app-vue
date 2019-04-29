@@ -31,7 +31,7 @@
 import io from 'socket.io-client';
 
 export default {
-    props: ['inputFocus'],
+    props: ['inputFocus', 'updateCurrentUser'],
     data() {
         return {
             name: '',
@@ -57,6 +57,7 @@ export default {
         saveName() {
             if (this.name.length > 2) {
                 this.username = this.name;
+                this.updateCurrentUser(this.name);
                 this.name = '';
             }
         }
