@@ -92,12 +92,14 @@ export default {
         border: none;
         box-sizing: border-box;
         width: 75vw;
+        max-width: 650px;
         font-size: 1em;
     }
     button {
         height: 7vh;
         font-size: 1em;
         width: 20vw;
+        max-width: 150px;
         margin-left: 1vw;
         border: none;
         outline: none;

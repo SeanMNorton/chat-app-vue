@@ -43,4 +43,8 @@ export default {
     height: unset;
     overflow: hidden !important;
   }
+  #app {
+    display: flex;
+    justify-content: center;
+  }
 </style>

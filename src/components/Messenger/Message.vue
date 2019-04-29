@@ -1,6 +1,5 @@
 <template>
   <div v-if="isCurrentUser" class="message-card message-card-current">
-    <!-- <span class="username">{{message.user}}</span>  -->
     <span class="username">You</span> 
     <span class="message message-current">{{ message.body }}</span>
   </div>
@@ -32,10 +31,10 @@ export default {
   .message-card {
     display: flex;
     flex-direction: column-reverse;
+    align-items: flex-start;
     padding: 10px 4px;
     margin-bottom: 10px;
     font-family: sans-serif;
-    align-items: flex-start;
   }
   .message-card-current {
     align-self: right;
@@ -44,7 +43,6 @@ export default {
   .username{
     color: #999;
     font-size: .7em;
-    /* padding-left: 15px; */
   }
   .message {
     border: 2px solid #007bff;

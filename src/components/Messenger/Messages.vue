@@ -38,6 +38,7 @@ export default {
     flex-direction: column-reverse;
     overflow: scroll;
     width: 100vw;
+    max-width: 850px;
     padding: 20px 10px;
     box-sizing: border-box;
     font-size: 1.2em;
